@@ -1,0 +1,99 @@
+[debug] [2024-03-02T06:41:51.753Z] ----------------------------------------------------------------------
+[debug] [2024-03-02T06:41:51.755Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Victor Mak\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2024-03-02T06:41:51.756Z] CLI Version:   13.4.0
+[debug] [2024-03-02T06:41:51.756Z] Platform:      win32
+[debug] [2024-03-02T06:41:51.756Z] Node Version:  v20.11.1
+[debug] [2024-03-02T06:41:51.756Z] Time:          Sat Mar 02 2024 14:41:51 GMT+0800 (Malaysia Time)
+[debug] [2024-03-02T06:41:51.756Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-03-02T06:41:51.762Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-03-02T06:41:51.762Z] > authorizing via signed-in user (programmer.htetaung@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\Victor Mak\Documents\University\Introduction to AI\Excursion Advisor Chatbot Backend
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2024-03-02T06:42:00.623Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
+[debug] [2024-03-02T06:42:01.224Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2024-03-02T06:42:01.224Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[info] i  Using project butlerofvictor (ButlerOfVictor) 
+[info] 
+=== Firestore Setup
+[debug] [2024-03-02T06:42:02.352Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/butlerofvictor/services/firestore.googleapis.com [none]
+[debug] [2024-03-02T06:42:02.352Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/butlerofvictor/services/firestore.googleapis.com x-goog-quota-user=projects/butlerofvictor
+[debug] [2024-03-02T06:42:03.760Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/butlerofvictor/services/firestore.googleapis.com 200
+[debug] [2024-03-02T06:42:03.761Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/butlerofvictor/services/firestore.googleapis.com [omitted]
+[debug] [2024-03-02T06:42:03.761Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/butlerofvictor/databases/(default) [none]
+[debug] [2024-03-02T06:42:03.912Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/butlerofvictor/databases/(default) 200
+[debug] [2024-03-02T06:42:03.912Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/butlerofvictor/databases/(default) {"name":"projects/butlerofvictor/databases/(default)","uid":"2d71da60-0acb-4280-808f-97e33e4dd05b","createTime":"2024-02-26T00:20:16.629596Z","updateTime":"2024-02-26T00:20:16.629596Z","locationId":"asia-southeast1","type":"FIRESTORE_NATIVE","concurrencyMode":"PESSIMISTIC","versionRetentionPeriod":"3600s","earliestVersionTime":"2024-03-02T05:42:04.042520Z","appEngineIntegrationMode":"DISABLED","keyPrefix":"zas","pointInTimeRecoveryEnablement":"POINT_IN_TIME_RECOVERY_DISABLED","deleteProtectionState":"DELETE_PROTECTION_DISABLED","etag":"IM7V6tL81IQDMIXAjNvjzoQD"}
+[debug] [2024-03-02T06:42:03.912Z] database_type: FIRESTORE_NATIVE
+[debug] [2024-03-02T06:42:03.912Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-03-02T06:42:03.912Z] > authorizing via signed-in user (programmer.htetaung@gmail.com)
+[debug] [2024-03-02T06:42:03.912Z] [iam] checking project butlerofvictor for permissions ["firebase.projects.get"]
+[debug] [2024-03-02T06:42:03.913Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/butlerofvictor:testIamPermissions [none]
+[debug] [2024-03-02T06:42:03.913Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/butlerofvictor:testIamPermissions x-goog-quota-user=projects/butlerofvictor
+[debug] [2024-03-02T06:42:03.913Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/butlerofvictor:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2024-03-02T06:42:04.961Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/butlerofvictor:testIamPermissions 200
+[debug] [2024-03-02T06:42:04.961Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/butlerofvictor:testIamPermissions {"permissions":["firebase.projects.get"]}
+[info] 
+[info] Firestore Security Rules allow you to define how and when to allow
+[info] requests. You can keep these rules in your project directory
+[info] and publish them with firebase deploy.
+[info] 
+[info] 
+[info] Firestore indexes allow you to perform complex queries while
+[info] maintaining performance that scales with the size of the result
+[info] set. You can keep index definitions in your project directory
+[info] and publish them with firebase deploy.
+[info] 
+[info] 
+=== Functions Setup
+[debug] [2024-03-02T06:42:08.565Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-03-02T06:42:08.565Z] > authorizing via signed-in user (programmer.htetaung@gmail.com)
+[debug] [2024-03-02T06:42:08.565Z] [iam] checking project butlerofvictor for permissions ["firebase.projects.get"]
+[debug] [2024-03-02T06:42:08.565Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/butlerofvictor:testIamPermissions [none]
+[debug] [2024-03-02T06:42:08.565Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/butlerofvictor:testIamPermissions x-goog-quota-user=projects/butlerofvictor
+[debug] [2024-03-02T06:42:08.566Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/butlerofvictor:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2024-03-02T06:42:09.530Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/butlerofvictor:testIamPermissions 200
+[debug] [2024-03-02T06:42:09.530Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/butlerofvictor:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2024-03-02T06:42:09.531Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/butlerofvictor/services/cloudfunctions.googleapis.com [none]
+[debug] [2024-03-02T06:42:09.531Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/butlerofvictor/services/cloudfunctions.googleapis.com x-goog-quota-user=projects/butlerofvictor
+[debug] [2024-03-02T06:42:09.532Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/butlerofvictor/services/runtimeconfig.googleapis.com [none]
+[debug] [2024-03-02T06:42:09.533Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/butlerofvictor/services/runtimeconfig.googleapis.com x-goog-quota-user=projects/butlerofvictor
+[debug] [2024-03-02T06:42:10.917Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/butlerofvictor/services/runtimeconfig.googleapis.com 200
+[debug] [2024-03-02T06:42:10.917Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/butlerofvictor/services/runtimeconfig.googleapis.com [omitted]
+[debug] [2024-03-02T06:42:10.918Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/butlerofvictor/services/cloudfunctions.googleapis.com 200
+[debug] [2024-03-02T06:42:10.918Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/butlerofvictor/services/cloudfunctions.googleapis.com [omitted]
+[info] Let's create a new codebase for your functions.
+[info] A directory corresponding to the codebase will be created in your project
+[info] with sample code pre-configured.
+
+[info] See https://firebase.google.com/docs/functions/organize-functions for
+[info] more information on organizing your functions using codebases.
+
+[info] Functions can be deployed with firebase deploy.
+
+[info] i  Skipping write of functions/requirements.txt 
+[info] i  Skipping write of functions/.gitignore 
+[info] i  Skipping write of functions/main.py 
+[debug] [2024-03-02T06:42:20.629Z] Running command with virtualenv: command="C:\Users\Victor Mak\Documents\University\Introduction to AI\Excursion Advisor Chatbot Backend\functions\venv\Scripts\activate.bat", args=["","&&","pip3","install","--upgrade","pip"]
+[debug] [2024-03-02T06:42:27.201Z] Error: spawn "C:\Users\Victor Mak\Documents\University\Introduction to AI\Excursion Advisor Chatbot Backend\functions\venv\Scripts\activate.bat" ENOENT
+    at notFoundError (C:\Users\Victor Mak\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\cross-spawn\lib\enoent.js:6:26)
+    at verifyENOENT (C:\Users\Victor Mak\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\cross-spawn\lib\enoent.js:40:16)
+    at cp.emit (C:\Users\Victor Mak\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\cross-spawn\lib\enoent.js:27:25)
+    at ChildProcess._handle.onexit (node:internal/child_process:294:12)
+[error] 
+[error] Error: An unexpected error has occurred.
