@@ -1,4 +1,9 @@
-# Configuration
+# Configuration Files
 .idea/
-.venv/
 .vscode/
+.venv/
+
+*.env
+
+# Cache Files
+__pycache__/
