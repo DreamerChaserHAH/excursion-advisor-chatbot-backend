@@ -39,6 +39,16 @@ def post_status_check():
 @app.post("/get_data")
 async def get_data(city: str = Form(default=None), country: str = Form(default=None), place: str = Form(default=None), budget: bool = Form(default=None), date: str = Form(default=None), adventurous: bool = Form(default=None), airline : str = Form(default=None), to : str = Form(default=None), from_ : str = Form(default=None)):
     
+    if country is not None:
+        # User has specified a country
+        # Query the data for the specified country and return the gdppc field
+        result = client.ExcursionData.Countries.find_one({"country": country})
+        if result:
+            gdpcc = result.get("gdppc")
+            return {"gdppc": gdpcc}
+        else:
+            return {"message": "No data found for the specified country"}
+        
     if from_ is not None:
         # User has specified a starting point for his journey
         if to is not None:
