@@ -11,13 +11,19 @@ load_dotenv()
 app = FastAPI()
 uri = os.getenv("URI")
 
-class RequestEntity(BaseModel):
-    city: str
-    country: str
-    place: str
-    budget: int
-    date: str
-    adventurous: bool
+def return_fullfillment():
+    return {
+        "fulfillmentMessages": [
+            {
+                "text": {
+                    "text": [
+                        "Text response from webhook"
+                    ]
+                }
+            }
+        ]
+    }
+ 
 
 client = MongoClient(uri, server_api=ServerApi('1'))
 
@@ -40,6 +46,5 @@ def post_status_check():
 async def get_data(request: Request):
     data = await request.json()
     print(data)
-    return {}
-   
+    return return_fullfillment()
         
