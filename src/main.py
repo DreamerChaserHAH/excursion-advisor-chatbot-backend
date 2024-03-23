@@ -25,7 +25,7 @@ def get_country(country_name):
                 }
             ]
         }
-    return {
+    content =  {
         "fulfillmentMessages": [
             { 
                 "text": {
@@ -36,19 +36,19 @@ def get_country(country_name):
             },
             {
                 "card": {
-                    "title": country_information["name"],
-                    "subtitle": country_information["description"],
+                    "title": country_name + "'s Flag",
                     "imageUri": country_information["flag"],
-                    "buttons": [
-                        {
-                            "text": "More Information",
-                            "postback": "http://google.com"
-                        }
-                    ]
                 }
             }
         ]
     }
+    for image in country_information["highlights"]:
+        content["fulfillmentMessages"].append({
+            "card": {
+                "imageUri": image
+            }
+        })
+    return content
 
 def return_fullfillment():
     return {
