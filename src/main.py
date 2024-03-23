@@ -32,10 +32,18 @@ def get_country(country_name):
                     "text": [
                         country_information["description"]
                     ]
-                },
-                "text": {
-                    "text": [
-                        country_information["description"]
+                }
+            },
+            {
+                "card": {
+                    "title": country_information["name"],
+                    "subtitle": country_information["description"],
+                    "imageUri": country_information["flag"],
+                    "buttons": [
+                        {
+                            "text": "More Information",
+                            "postback": "http://google.com"
+                        }
                     ]
                 }
             }
