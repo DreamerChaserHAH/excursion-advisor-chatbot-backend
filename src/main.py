@@ -32,9 +32,7 @@ def get_country(country_name):
                     "text": [
                         country_information["description"]
                     ]
-                }
-            },
-            {
+                },
                 "richContent": [
                     [
                         {
