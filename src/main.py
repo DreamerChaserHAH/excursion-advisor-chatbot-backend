@@ -36,7 +36,7 @@ def get_country(country_name):
             },
             {
                 "card": {
-                    "title": country_name + "'s Flag",
+                    "title": country_name.capitalize() + "'s Flag",
                     "imageUri": country_information["flag"],
                 }
             }
@@ -58,14 +58,14 @@ def random_country_recommendation():
             { 
                 "text": {
                     "text": [
-                        "How about " + random_country["name"] + "?",
-                        "Is " + random_country["name"] + " within your consideration?"
+                        "How about " + random_country["name"].capitalize() + "?",
+                        "Is " + random_country["name"].capitalize() + " within your consideration?"
                     ]
                 }
             },
             {
                 "card": {
-                    "title": random_country["name"] + "'s Flag",
+                    "title": random_country["name"].capitalize() + "'s Flag",
                     "imageUri": random_country["flag"],
                 }
             }
@@ -114,6 +114,9 @@ def post_status_check():
 @app.post("/get_data")
 async def get_data(request: Request):
     data = await request.json()
-    print(data)
+    intent_display_name = data["queryResult"]["intent"]["displayName"]
+    if intent_display_name == "Plan your Trip.Country":
+        country_name = data["queryResult"]["parameters"]["country"]
+        return get_country(country_name)
     return random_country_recommendation()
         
