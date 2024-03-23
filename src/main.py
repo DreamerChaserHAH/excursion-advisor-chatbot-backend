@@ -155,7 +155,7 @@ async def get_data(request: Request):
         country_name = data["queryResult"]["parameters"]["country"]
         return get_country(country_name)
     if intent_display_name == "Plan your Trip.City":
-        city_name = data["queryResult"]["parameters"]["city"]
+        city_name = data["queryResult"]["parameters"]["City"]
         return get_city(city_name)
     if intent_display_name == "unsure where":
         return random_country_recommendation()
