@@ -50,6 +50,30 @@ def get_country(country_name):
         })
     return content
 
+def random_country_recommendation():
+    countries = list(client.ExcursionData.Countries.aggregate([{"$sample": {"size": 1}}]))
+    random_country = countries[0]
+    content =  {
+        "fulfillmentMessages": [
+            { 
+                "text": {
+                    "text": [
+                        "How about " + random_country["name"] + "?",
+                        "Is " + random_country["name"] + " within your consideration?"
+                    ]
+                }
+            },
+            {
+                "card": {
+                    "title": random_country["name"] + "'s Flag",
+                    "imageUri": random_country["flag"],
+                }
+            }
+        ]
+    }
+    return content
+    
+
 def return_fullfillment():
     return {
     "fulfillmentMessages": [
@@ -91,5 +115,5 @@ def post_status_check():
 async def get_data(request: Request):
     data = await request.json()
     print(data)
-    return get_country("myanmar")
+    return random_country_recommendation()
         
