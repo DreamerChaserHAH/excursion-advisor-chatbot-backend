@@ -75,7 +75,40 @@ def random_country_recommendation():
         ]
     }
     return content
-    
+
+def get_city(cityname):
+    city_information = client.ExcursionData.Cities.find_one({"name": cityname.lower()})
+    if city_information is None:
+        return {
+            "fulfillmentMessages": [
+                {
+                    "text": {
+                        "text": [
+                            "Oops! It seems that I don't have information about the city of your choice yet! But no worries, I will notify the developers about your interest. Thank you!"
+                        ]
+                    }
+                }
+            ]
+        }
+
+    content =  {
+        "fulfillmentMessages": [
+            { 
+                "text": {
+                    "text": [
+                        city_information["description"]
+                    ]
+                }
+            }
+        ]
+    }
+    for image in city_information["highlights"]:
+        content["fulfillmentMessages"].append({
+            "card": {
+                "imageUri": image
+            }
+        })
+    return content
 
 def return_fullfillment():
     return {
@@ -121,6 +154,9 @@ async def get_data(request: Request):
     if intent_display_name == "Plan your Trip.Country":
         country_name = data["queryResult"]["parameters"]["country"]
         return get_country(country_name)
+    if intent_display_name == "Plan your Trip.City":
+        city_name = data["queryResult"]["parameters"]["city"]
+        return get_city(city_name)
     if intent_display_name == "unsure where":
         return random_country_recommendation()
     return {}
