@@ -11,6 +11,32 @@ load_dotenv()
 app = FastAPI()
 uri = os.getenv("URI")
 
+def get_country(country_name):
+    country_information = client.ExcursionData.Countries.find_one({"name": country_name.lower()})
+    if country_information is None:
+        return {
+            "fulfillmentMessages": [
+                {
+                    "text": {
+                        "text": [
+                            "Oops! It seems that I don't have information about the country of your choice yet! But no worries, I will notify the developers about your interest. Thank you!"
+                        ]
+                    }
+                }
+            ]
+        }
+    return {
+        "fulfillmentMessages": [
+            {
+                "text": {
+                    "text": [
+                        "I have found the country information of " + country_name + "! Their GDP per capita is " + str(country_information["gdppc"]) + " USD."
+                    ]
+                }
+            }
+        ]
+    }
+
 def return_fullfillment():
     return {
     "fulfillmentMessages": [
@@ -52,5 +78,5 @@ def post_status_check():
 async def get_data(request: Request):
     data = await request.json()
     print(data)
-    return return_fullfillment()
+    return get_country("myanmar")
         
