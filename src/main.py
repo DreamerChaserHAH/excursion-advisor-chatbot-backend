@@ -27,10 +27,20 @@ def get_country(country_name):
         }
     return {
         "fulfillmentMessages": [
-            {
+            { 
                 "text": {
                     "text": [
                         country_information["description"]
+                    ]
+                },
+                "carouselBrowse": {
+                    "items": [
+                        {
+                            "title": country_name + "'s Flag",
+                            "image": {
+                                "url": country_information["flag"]
+                            },
+                        }
                     ]
                 }
             }
