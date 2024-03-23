@@ -1,4 +1,5 @@
 
+from bson import ObjectId
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from pydantic import BaseModel
@@ -25,12 +26,14 @@ def get_country(country_name):
                 }
             ]
         }
+    cities_list = client.ExcursionData.Cities.find({"country": ObjectId(country_information["_id"])})
+
     content =  {
         "fulfillmentMessages": [
             { 
                 "text": {
                     "text": [
-                        country_information["description"]
+                        country_information["description"] + "\n\n" + "Here are some of the cities in " + country_name.capitalize() + ":" + "\n" + ", ".join([city["name"].capitalize() for city in cities_list]) + "."
                     ]
                 }
             },
@@ -118,5 +121,7 @@ async def get_data(request: Request):
     if intent_display_name == "Plan your Trip.Country":
         country_name = data["queryResult"]["parameters"]["country"]
         return get_country(country_name)
-    return random_country_recommendation()
+    if intent_display_name == "unsure where":
+        return random_country_recommendation()
+    return {}
         
