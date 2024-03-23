@@ -28,11 +28,6 @@ def get_country(country_name):
     return {
         "fulfillmentMessages": [
             { 
-                "text": {
-                    "text": [
-                        country_information["description"]
-                    ]
-                },
                 "carouselBrowse": {
                     "items": [
                         {
@@ -42,7 +37,12 @@ def get_country(country_name):
                             },
                         }
                     ]
-                }
+                },
+                "text": {
+                    "text": [
+                        country_information["description"]
+                    ]
+                },
             }
         ]
     }
