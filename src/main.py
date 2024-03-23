@@ -33,6 +33,23 @@ def get_country(country_name):
                         country_information["description"]
                     ]
                 }
+            },
+            {
+                "richContent": [
+                    [
+                        {
+                            "type": "info",
+                            "title": "Country Information",
+                            "subtitle": "Country Information",
+                            "image": {
+                                "src": {
+                                    "rawUrl": country_information["flag"]
+                                }
+                            },
+                            "actionLink": "https://www.google.com/search?q=" + country_name
+                        }
+                    ]
+                ]
             }
         ]
     }
