@@ -30,7 +30,7 @@ def get_country(country_name):
             {
                 "text": {
                     "text": [
-                        "I have found the country information of " + country_name + "! Their GDP per capita is " + str(country_information["gdppc"]) + " USD."
+                        country_information["description"]
                     ]
                 }
             }
