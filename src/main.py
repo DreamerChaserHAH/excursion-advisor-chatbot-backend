@@ -162,6 +162,12 @@ def get_country_trip_plan(from_city, to_country):
                         ]
                     }
                 }
+            ],
+            "outputContexts": [
+                {
+                    "name": "/contexts/from-city-setting",
+                    "lifespanCount": 1
+                }
             ]
         }
     return {
@@ -230,7 +236,9 @@ def post_status_check():
 
 @app.post("/get_data")
 async def get_data(request: Request):
+
     data = await request.json()
+    print(data)
     intent_display_name = data["queryResult"]["intent"]["displayName"]
 
     if intent_display_name == "Planning-Country":
