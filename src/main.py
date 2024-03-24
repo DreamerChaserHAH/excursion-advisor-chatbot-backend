@@ -33,7 +33,7 @@ def get_city_as_context(city_name, session):
         ]
     }
 
-def get_fulfillment_message(text):
+def get_fulfillment_message():
     return {
         "fulfillmentMessages": [
         ]
