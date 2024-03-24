@@ -320,18 +320,18 @@ async def get_data(request: Request):
         from_city_name = None
         for context in data["queryResult"]["outputContexts"]:
             if(context["name"].endswith("from-city")):
-                from_city_name = context["parameters"]["from-city"]
+                from_city_name = context["parameters"].get["from-city"]
 
-        to_country_name = data["queryResult"]["parameters"]["to-country"]
+        to_country_name = data["queryResult"]["parameters"].get["to-country"]
         return get_country_trip_plan(from_city_name, to_country_name, data["session"]) 
     
     elif is_intent_the_same(intent_display_name, "planning.city"):
         from_city_name = None
         for context in data["queryResult"]["outputContexts"]:
             if(context["name"].endswith("from-city")):
-                from_city_name = context["parameters"]["from-city"]
+                from_city_name = context["parameters"].get["from-city"]
 
-        to_city_name = data["queryResult"]["parameters"]["to-city"]
+        to_city_name = data["queryResult"]["parameters"].get["to-city"]
         return get_city_trip_plan(from_city_name, to_city_name, data["session"])
     
     elif is_intent_the_same(intent_display_name,"random.recommendation"):
