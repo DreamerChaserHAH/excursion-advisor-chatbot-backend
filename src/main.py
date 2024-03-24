@@ -20,12 +20,18 @@ def add_image(title, image_url):
         }
     }
 
-def get_city_as_context(city_name):
-    return {"sessionInfo": {
+def get_city_as_context(city_name, session):
+    return {
+        "outputContexts": [
+            {
+                "name": session,
+                "lifespanCount": 9999,
                 "parameters": {
-                "City": city_name
-        }
-    }}
+                    "from-city": city_name
+                }
+            }
+        ]
+    }
 
 def get_fulfillment_message(text):
     return {
@@ -234,7 +240,8 @@ async def get_data(request: Request):
         return get_city(city_name)
     if intent_display_name == "user.location":
         city_name = data["queryResult"]["parameters"]["City"]
-        get_city_as_context(city_name)
+        sessionid = data["session"]
+        get_city_as_context(city_name, sessionid)
     if intent_display_name == "unsure where":
         country_name = data['queryResult']["parameters"]["country"]
         if country_name is not None:
