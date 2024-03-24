@@ -24,10 +24,10 @@ def get_city_as_context(city_name, session):
     return {
         "outputContexts": [
             {
-                "name": session,
+                "name": session + "/contexts/from-city",
                 "lifespanCount": 9999,
                 "parameters": {
-                    "from-city": city_name
+                    "name": city_name
                 }
             }
         ]
