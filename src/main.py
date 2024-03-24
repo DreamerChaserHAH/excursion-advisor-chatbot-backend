@@ -228,7 +228,7 @@ def get_country_trip_plan(from_city, to_country, session_string):
             ]
     }
 
-def get_city_trip_plan(from_city, to_city, session_string):
+def get_city_trip_plan(from_city, to_city, activity_type, session_string):
     city_information = client.ExcursionData.Cities.find_one({"name": to_city.lower()})
     
     if city_information is None:
@@ -236,7 +236,33 @@ def get_city_trip_plan(from_city, to_city, session_string):
     
     if from_city is None:
         return from_city_empty_response(session_string)
-    
+
+    if activity_type is None:
+        return {
+            "fulfillmentMessages": [
+                {
+                    "text": {
+                        "text": [
+                            "What kind of activities are you interested in near " + to_city + "?\nMy creators have created 2 categories of activities: 𝗔𝗱𝘃𝗲𝗻𝘁𝘂𝗿𝗲𝘀 and Sightseeing.",
+                        ]
+                    }
+                }
+            ],
+            "outputContexts": [
+                {
+                    "name": session_string + "/contexts/activities-setting",
+                    "lifespanCount": 1,
+                },
+                {
+                    "name": session_string + "/contexts/to-city",
+                    "lifespanCount": 9999,
+                    "parameters": {
+                        "to-city": to_city
+                    }
+                }
+            ]
+        }
+
     return {
         "fulfillmentMessages": [
             {
@@ -246,20 +272,9 @@ def get_city_trip_plan(from_city, to_city, session_string):
                         "Alright! You are coming from " + from_city + "."
                     ]
                 }
-            },
-            {
-                "text": {
-                    "text": [
-                        "What kind of activities are you interested in near " + to_city + "?\nMy creators have created 2 categories of activities: 𝗔𝗱𝘃𝗲𝗻𝘁𝘂𝗿𝗲𝘀 and Sightseeing.",
-                    ]
-                }
             }
         ],
         "outputContexts": [
-                {
-                    "name": session_string + "/contexts/activities-setting",
-                    "lifespanCount": 1,
-                },
                 {
                     "name": session_string + "/contexts/to-city",
                     "lifespanCount": 9999,
@@ -333,12 +348,15 @@ async def get_data(request: Request):
     
     elif is_intent_the_same(intent_display_name, "planning.city"):
         from_city_name = None
+        activity_type = None
         for context in data["queryResult"]["outputContexts"]:
             if(context["name"].endswith("from-city")):
                 from_city_name = context["parameters"].get("from-city")
+            if(context["name"].endswith("activity")):
+                activity_type = context["parameters"].get("activityType")
 
         to_city_name = data["queryResult"]["parameters"].get("to-city")
-        return get_city_trip_plan(from_city_name, to_city_name, data["session"])
+        return get_city_trip_plan(from_city_name, to_city_name, activity_type, data["session"])
     
     elif is_intent_the_same(intent_display_name,"random.recommendation"):
         to_country_name = None
