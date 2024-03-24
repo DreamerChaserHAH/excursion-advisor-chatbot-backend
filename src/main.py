@@ -12,6 +12,9 @@ load_dotenv()
 app = FastAPI()
 uri = os.getenv("URI")
 
+def is_intent_the_same(intent_name_in_request, intent_name):
+    return intent_name_in_request == "z."+ intent_name
+
 def add_image(title, image_url):
     return {
         "card": {
@@ -263,21 +266,20 @@ def post_status_check():
 
 @app.post("/get_data")
 async def get_data(request: Request):
-
     data = await request.json()
     print(data)
     intent_display_name = data["queryResult"]["intent"]["displayName"]
 
-    if intent_display_name == "vague.city-livingthere":
+    if is_intent_the_same(intent_display_name, "vague.city-livingthere"):
         for context in data["queryResult"]["outputContexts"]:
             if(context["name"].endswith("vague-city")):
                 city_name = context["parameters"]["city"]
                 return get_city_as_context(city_name, data["session"])
     
-    elif intent_display_name == "vague.city-gothere":
+    elif is_intent_the_same(intent_display_name, "vague.city-gothere"):
         return {}
     
-    if intent_display_name == "planning.country":
+    if is_intent_the_same(intent_display_name, "planning.country"):
         from_city_name = None
         try:
             for context in data["queryResult"]["outputContexts"]:
@@ -288,10 +290,11 @@ async def get_data(request: Request):
         to_country_name = data["queryResult"]["parameters"]["to-country"]
         return get_country_trip_plan(from_city_name, to_country_name, data["session"]) 
     
-    elif intent_display_name == "planning.city":
+    elif is_intent_the_same(intent_display_name, "planning.city"):
         city_name = data["queryResult"]["parameters"]["City"]
         return get_city(city_name)
-    elif intent_display_name == "random.recommendation":
+    
+    elif is_intent_the_same(intent_display_name,"random.recommendation"):
 
         to_country_name = None
         for context in data["queryResult"]["outputContexts"]:
@@ -303,7 +306,7 @@ async def get_data(request: Request):
         else:
             return random_country_recommendation()
         
-    elif intent_display_name == "explain.about":
+    elif is_intent_the_same(intent_display_name,"explain.about") :
         country_name = data["queryResult"]["parameters"].get("Country")
         if country_name is not None:
             return get_country(country_name)
