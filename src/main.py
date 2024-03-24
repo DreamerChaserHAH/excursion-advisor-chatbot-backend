@@ -151,6 +151,19 @@ def random_city_recommendation(country_name):
     return content
 
 def get_country_trip_plan(from_city, to_country, session_string):
+    
+    country_information = client.ExcursionData.Countries.find_one({"name": to_country.lower()})
+    if country_information is None:
+        final_response = get_fulfillment_message()
+        final_response["fulfillmentMessages"].append({
+            "text": {
+                "text": [
+                    "Oops! It seems that I don't have information about the country of your choice yet! But no worries, I will notify the developers about your interest. Thank you!"
+                ]
+            }
+        })
+        return final_response
+    
     if from_city is None:
         return {
             "fulfillmentMessages": [
