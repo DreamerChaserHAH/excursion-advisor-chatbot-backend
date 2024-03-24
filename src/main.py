@@ -285,7 +285,6 @@ async def get_data(request: Request):
         city_name = data["queryResult"]["parameters"]["City"]
         return get_city(city_name)
     elif intent_display_name == "unsure where":
-        city_name = data["queryResult"]["outputContexts"][0]["parameters"]["from-city"]
         try:
             country_name = data['queryResult']["parameters"]["country"]
             return random_city_recommendation(country_name)
