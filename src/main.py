@@ -242,8 +242,11 @@ async def get_data(request: Request):
     intent_display_name = data["queryResult"]["intent"]["displayName"]
 
     if intent_display_name == "vague.city-livingthere":
-        city_name = data["queryResult"]["outputContexts"]["vague-city"]["parameters"]["City"]
-        return get_city_as_context(city_name, data["session"])
+        for context in data["queryResult"]["outputContexts"]:
+            if(context["name"].endswith("vague-city")):
+                city_name = context["parameters"]["city"]
+                return get_city_as_context(city_name, data["session"])
+    
     elif intent_display_name == "vague.city-gothere":
         return {}
     
