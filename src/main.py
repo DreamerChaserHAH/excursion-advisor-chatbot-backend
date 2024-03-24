@@ -250,14 +250,14 @@ def get_city_trip_plan(from_city, to_city, session_string):
             {
                 "text": {
                     "text": [
-                        "Do you have a specific city in mind that you would like to visit in " + to_city + "?"
+                        "What kind of activities are you interested in near " + to_city + "? Sightseeing or Adventure?",
                     ]
                 }
             }
         ],
         "outputContexts": [
                 {
-                    "name": session_string + "/contexts/to-city-setting",
+                    "name": session_string + "/contexts/activities-setting",
                     "lifespanCount": 1,
                 }
             ]
@@ -337,7 +337,7 @@ async def get_data(request: Request):
         to_country_name = None
         for context in data["queryResult"]["outputContexts"]:
             if(context["name"].endswith("to-country")):
-                to_country_name = context["parameters"]["to-country"]
+                to_country_name = context["parameters"].get("to-country")
 
         if to_country_name is not None:
             return random_city_recommendation(to_country_name)
