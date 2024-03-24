@@ -250,7 +250,7 @@ def get_city_trip_plan(from_city, to_city, session_string):
             {
                 "text": {
                     "text": [
-                        "What kind of activities are you interested in near " + to_city + "? Sightseeing or Adventure?",
+                        "What kind of activities are you interested in near " + to_city + "?\nMy creators have created 2 categories of activities: 𝗔𝗱𝘃𝗲𝗻𝘁𝘂𝗿𝗲𝘀 and Sightseeing.",
                     ]
                 }
             }
@@ -259,6 +259,13 @@ def get_city_trip_plan(from_city, to_city, session_string):
                 {
                     "name": session_string + "/contexts/activities-setting",
                     "lifespanCount": 1,
+                },
+                {
+                    "name": session_string + "/contexts/to-city",
+                    "lifespanCount": 9999,
+                    "parameters": {
+                        "to-city": to_city
+                    }
                 }
             ]
     }
