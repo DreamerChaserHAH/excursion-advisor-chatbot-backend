@@ -242,10 +242,11 @@ async def get_data(request: Request):
         city_name = data["queryResult"]["outputContexts"][0]["parameters"]["from-city"]
         print(city_name)
     if intent_display_name == "unsure where":
-        country_name = data['queryResult']["parameters"]["country"]
-        if country_name is not None:
+        try:
+            country_name = data['queryResult']["parameters"]["country"]
             return random_city_recommendation(country_name)
-        return random_country_recommendation()
+        except:
+            return random_country_recommendation()
     city_name = data["queryResult"]["outputContexts"][0]["parameters"]["from-city"]
     print(city_name)
     print(data)
