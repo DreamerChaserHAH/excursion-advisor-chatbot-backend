@@ -239,8 +239,8 @@ async def get_data(request: Request):
         city_name = data["queryResult"]["parameters"]["City"]
         return get_city(city_name)
     if intent_display_name == "user.location":
-        city_name = data["queryResult"]["parameters"]["City"]
-        get_city_as_context(city_name)
+        city_name = data["queryResult"]["outputContexts"][0]["parameters"]["from-city"]
+        print(city_name)
     if intent_display_name == "unsure where":
         country_name = data['queryResult']["parameters"]["country"]
         if country_name is not None:
