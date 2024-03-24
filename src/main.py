@@ -25,14 +25,13 @@ def from_city_empty_response(session_string):
             ]
         }
     })
-    content.append({
-        "outputContexts": [
-            {
-                "name": session_string + "/contexts/from-city-setting",
-                "lifespanCount": 1
-            }
-        ]
-    })
+    content["outputContexts"] = []
+    content["outputContexts"].append(
+        {
+            "name": session_string + "/contexts/from-city-setting",
+            "lifespanCount": 1
+        }
+    )
     return content
 def no_city_in_database_response():
     return {
