@@ -20,11 +20,11 @@ def add_image(title, image_url):
         }
     }
 
-def get_city_as_context(city_name):
+def get_city_as_context(city_name, session):
     return {
         "outputContexts": [
             {
-                "name":  "/contexts/from-city",
+                "name":  session + "/contexts/from-city",
                 "lifespanCount": 9999,
                 "parameters": {
                     "name": city_name
@@ -241,6 +241,12 @@ async def get_data(request: Request):
     print(data)
     intent_display_name = data["queryResult"]["intent"]["displayName"]
 
+    if intent_display_name == "vague.city-livingthere":
+        city_name = data["queryResult"]["outputContexts"][0]["parameters"]["City"]
+        return get_city_as_context(city_name, data["session"])
+    elif intent_display_name == "vague.city-gothere":
+        return {}
+    
     if intent_display_name == "Planning-Country":
         from_city_name = None
         try:
