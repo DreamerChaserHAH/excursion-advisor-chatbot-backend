@@ -270,7 +270,7 @@ async def get_data(request: Request):
     elif intent_display_name == "vague.city-gothere":
         return {}
     
-    if intent_display_name == "Planning-Country":
+    if intent_display_name == "planning.country":
         from_city_name = None
         try:
             for context in data["queryResult"]["outputContexts"]:
@@ -280,7 +280,7 @@ async def get_data(request: Request):
             from_city_name = None
         country_name = data["queryResult"]["parameters"]["country"]
         return get_country_trip_plan(from_city_name, country_name, data["session"]) 
-    elif intent_display_name == "Planning-City":
+    elif intent_display_name == "planning.city":
         city_name = data["queryResult"]["parameters"]["City"]
         return get_city(city_name)
     elif intent_display_name == "unsure where":
