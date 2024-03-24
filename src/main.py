@@ -231,6 +231,10 @@ def post_status_check():
 @app.post("/get_data")
 async def get_data(request: Request):
     data = await request.json()
+    
+    city_name = data["queryResult"]["outputContexts"][0]["parameters"]["from-city"]
+    print(city_name)
+
     intent_display_name = data["queryResult"]["intent"]["displayName"]
     if intent_display_name == "Plan your Trip.Country":
         country_name = data["queryResult"]["parameters"]["country"]
@@ -247,8 +251,5 @@ async def get_data(request: Request):
             return random_city_recommendation(country_name)
         except:
             return random_country_recommendation()
-    city_name = data["queryResult"]["outputContexts"][0]["parameters"]["from-city"]
-    print(city_name)
-    print(data)
     return {}
         
