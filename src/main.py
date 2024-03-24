@@ -170,6 +170,7 @@ def get_country_trip_plan(from_city, to_country, session_string):
                 }
             ]
         }
+    cities_list = client.ExcursionData.Cities.find({"country": ObjectId(country_information["_id"])})
     return {
         "fulfillmentMessages": [
             {
@@ -183,18 +184,24 @@ def get_country_trip_plan(from_city, to_country, session_string):
             {
                 "text": {
                     "text": [
-                        "Do you have a specific city in mind that you would like to visit in " + to_country + "?"
+                        "Do you have a specific city in mind that you would like to visit in " + to_country + "?\n I have information on multiple cities : " + ", ".join([city["name"].capitalize() for city in cities_list])
                     ]
                 }
             },
             {
                 "text": {
                     "text": [
-                        "Tell me if you want some random recommendations?"
+                        "Or, tell me if you want some random recommendations from "+ to_country + "?"
                     ]
                 }
             }
-        ]
+        ],
+        "outputContexts": [
+                {
+                    "name": session_string + "/contexts/to-city-setting",
+                    "lifespanCount": 1,
+                }
+            ]
     }
 
 def return_fullfillment():
