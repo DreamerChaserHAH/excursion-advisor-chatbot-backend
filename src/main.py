@@ -240,12 +240,12 @@ async def get_data(request: Request):
         return get_city(city_name)
     if intent_display_name == "user.location":
         city_name = data["queryResult"]["parameters"]["City"]
-        print(data)
         get_city_as_context(city_name)
     if intent_display_name == "unsure where":
         country_name = data['queryResult']["parameters"]["country"]
         if country_name is not None:
             return random_city_recommendation(country_name)
         return random_country_recommendation()
+    print(data)
     return {}
         
