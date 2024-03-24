@@ -16,5 +16,7 @@ with open('countryinfo.csv', 'r') as file:
 uri = os.getenv("URI")
 client = MongoClient(uri, server_api=ServerApi('1'))
 
-for country in countries:
-    client.ExcursionData.Countries.insert_one({"country": country[0].lower(), "gdppc": int(country[1])})
+client.ExcursionData.Countries.insert_one({"name": "myanmar", "gdppc": 1000})
+
+#for country in countries:
+#    client.ExcursionData.Countries.insert_one({"name": country[0].lower(), "gdppc": int(country[1])})
