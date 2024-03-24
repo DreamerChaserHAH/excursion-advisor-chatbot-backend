@@ -150,8 +150,8 @@ def random_city_recommendation(country_name):
         content["fulfillmentMessages"].append(add_image("Highlight", image))
     return content
 
-def get_country_plan(from_country, to_country):
-    if from_country is None:
+def get_country_trip_plan(from_city, to_country):
+    if from_city is None:
         return {
             "fulfillmentMessages": [
                 {
@@ -231,21 +231,23 @@ def post_status_check():
 @app.post("/get_data")
 async def get_data(request: Request):
     data = await request.json()
-    
-    city_name = data["queryResult"]["outputContexts"][0]["parameters"]["from-city"]
-    print(city_name)
 
     intent_display_name = data["queryResult"]["intent"]["displayName"]
     if intent_display_name == "Plan your Trip.Country":
+        
+        from_city_name = None
+        try:
+            from_city_name = data["queryResult"]["outputContexts"][0]["parameters"]["from-city"]
+        except:
+            from_city_name = None
         country_name = data["queryResult"]["parameters"]["country"]
-        return get_country(country_name)
+        return get_country_trip_plan(from_city_name, country_name)
+    
     if intent_display_name == "Plan your Trip.City":
         city_name = data["queryResult"]["parameters"]["City"]
         return get_city(city_name)
-    if intent_display_name == "user.location":
-        city_name = data["queryResult"]["outputContexts"][0]["parameters"]["from-city"]
-        print(city_name)
     if intent_display_name == "unsure where":
+        city_name = data["queryResult"]["outputContexts"][0]["parameters"]["from-city"]
         try:
             country_name = data['queryResult']["parameters"]["country"]
             return random_city_recommendation(country_name)
