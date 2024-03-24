@@ -15,6 +15,50 @@ uri = os.getenv("URI")
 def is_intent_the_same(intent_name_in_request, intent_name):
     return intent_name_in_request == "z."+ intent_name
 
+def from_city_empty_response(session_string):
+    content = get_fulfillment_message()
+    content["fulfillmentMessages"].append({
+        "text": {
+            "text": [
+                 "From which city will you be departing?",
+                "Which city are you situated in right now?"
+            ]
+        }
+    })
+    content.append({
+        "outputContexts": [
+            {
+                "name": session_string + "/contexts/from-city-setting",
+                "lifespanCount": 1
+            }
+        ]
+    })
+    return content
+def no_city_in_database_response():
+    return {
+        "fulfillmentMessages": [
+            {
+                "text": {
+                    "text": [
+                        "Oops! It seems that 𝗪𝗮𝗻𝗱𝗲𝗿 doesn't have information about the city of your choice yet! But no worries, 𝗪𝗮𝗻𝗱𝗲𝗿 will notify the developers about your interest. Sank kyu!"
+                    ]
+                }
+            }
+        ]
+    }
+def no_country_in_database_response():
+    return {
+        "fulfillmentMessages": [
+            {
+                "text": {
+                    "text": [
+                        "Oops! It seems that 𝗪𝗮𝗻𝗱𝗲𝗿 doesn't have information about the country of your choice yet! But no worries, 𝗪𝗮𝗻𝗱𝗲𝗿 will notify the developers about your interest. Sank kyu!"
+                    ]
+                }
+            }
+        ]
+    }
+
 def add_image(title, image_url):
     return {
         "card": {
@@ -45,15 +89,7 @@ def get_fulfillment_message():
 def get_country(country_name):
     country_information = client.ExcursionData.Countries.find_one({"name": country_name.lower()})
     if country_information is None:
-        final_response = get_fulfillment_message()
-        final_response["fulfillmentMessages"].append({
-            "text": {
-                "text": [
-                    "Oops! It seems that I don't have information about the country of your choice yet! But no worries, I will notify the developers about your interest. Thank you!"
-                ]
-            }
-        })
-        return final_response
+        no_country_in_database_response()
     
     cities_list = client.ExcursionData.Cities.find({"country": ObjectId(country_information["_id"])})
 
@@ -70,20 +106,10 @@ def get_country(country_name):
         content["fulfillmentMessages"].append(add_image("Highlight", image))
     return content
 
-def get_city(cityname):
-    city_information = client.ExcursionData.Cities.find_one({"name": cityname.lower()})
+def get_city(city_name):
+    city_information = client.ExcursionData.Cities.find_one({"name": city_name.lower()})
     if city_information is None:
-        return {
-            "fulfillmentMessages": [
-                {
-                    "text": {
-                        "text": [
-                            "Oops! It seems that I don't have information about the city of your choice yet! But no worries, I will notify the developers about your interest. Thank you!"
-                        ]
-                    }
-                }
-            ]
-        }
+        return no_city_in_database_response()
 
     content =  {
         "fulfillmentMessages": [
@@ -157,35 +183,11 @@ def get_country_trip_plan(from_city, to_country, session_string):
     
     country_information = client.ExcursionData.Countries.find_one({"name": to_country.lower()})
     if country_information is None:
-        final_response = get_fulfillment_message()
-        final_response["fulfillmentMessages"].append({
-            "text": {
-                "text": [
-                    "Oops! It seems that I don't have information about the country of your choice yet! But no worries, I will notify the developers about your interest. Thank you!"
-                ]
-            }
-        })
-        return final_response
+        return no_country_in_database_response()
     
     if from_city is None:
-        return {
-            "fulfillmentMessages": [
-                {
-                    "text": {
-                        "text": [
-                            "From which city will you be departing?",
-                            "Which city are you situated in right now?"
-                        ]
-                    }
-                },
-            ],
-            "outputContexts": [
-                {
-                    "name": session_string + "/contexts/from-city-setting",
-                    "lifespanCount": 1
-                }
-            ]
-        }
+        return from_city_empty_response(session_string)
+    
     cities_list = client.ExcursionData.Cities.find({"country": ObjectId(country_information["_id"])})
     return {
         "fulfillmentMessages": [
@@ -200,7 +202,7 @@ def get_country_trip_plan(from_city, to_country, session_string):
             {
                 "text": {
                     "text": [
-                        "Do you have a specific city in mind that you would like to visit in " + to_country + "?\n I have information on multiple cities : " + ", ".join([city["name"].capitalize() for city in cities_list])
+                        "Do you have a specific city in mind that you would like to visit in " + to_country + "?\n𝗪𝗮𝗻𝗱𝗲𝗿 have information on multiple cities :\n " + ",\n ".join([city["name"].capitalize() for city in cities_list])
                     ]
                 }
             },
@@ -223,6 +225,41 @@ def get_country_trip_plan(from_city, to_country, session_string):
                     "parameters": {
                         "to-country": to_country
                     }
+                }
+            ]
+    }
+
+def get_city_trip_plan(from_city, to_city, session_string):
+    city_information = client.ExcursionData.Cities.find_one({"name": to_city.lower()})
+    
+    if city_information is None:
+        return no_city_in_database_response()
+    
+    if from_city is None:
+        return from_city_empty_response()
+    
+    return {
+        "fulfillmentMessages": [
+            {
+                "text": {
+                    "text": [
+                        "I see that you are departing from " + from_city + ".",
+                        "Alright! You are coming from " + from_city + "."
+                    ]
+                }
+            },
+            {
+                "text": {
+                    "text": [
+                        "Do you have a specific city in mind that you would like to visit in " + to_city + "?"
+                    ]
+                }
+            }
+        ],
+        "outputContexts": [
+                {
+                    "name": session_string + "/contexts/to-city-setting",
+                    "lifespanCount": 1,
                 }
             ]
     }
@@ -281,21 +318,23 @@ async def get_data(request: Request):
     
     if is_intent_the_same(intent_display_name, "planning.country"):
         from_city_name = None
-        try:
-            for context in data["queryResult"]["outputContexts"]:
-                if(context["name"].endswith("from-city")):
-                    from_city_name = context["parameters"]["from-city"]
-        except:
-            from_city_name = None
+        for context in data["queryResult"]["outputContexts"]:
+            if(context["name"].endswith("from-city")):
+                from_city_name = context["parameters"]["from-city"]
+
         to_country_name = data["queryResult"]["parameters"]["to-country"]
         return get_country_trip_plan(from_city_name, to_country_name, data["session"]) 
     
     elif is_intent_the_same(intent_display_name, "planning.city"):
-        city_name = data["queryResult"]["parameters"]["City"]
-        return get_city(city_name)
+        from_city_name = None
+        for context in data["queryResult"]["outputContexts"]:
+            if(context["name"].endswith("from-city")):
+                from_city_name = context["parameters"]["from-city"]
+
+        to_city_name = data["queryResult"]["parameters"]["to-city"]
+        return get_city_trip_plan(from_city_name, to_city_name, data["session"])
     
     elif is_intent_the_same(intent_display_name,"random.recommendation"):
-
         to_country_name = None
         for context in data["queryResult"]["outputContexts"]:
             if(context["name"].endswith("to-country")):
