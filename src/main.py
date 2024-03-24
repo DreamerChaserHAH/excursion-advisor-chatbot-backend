@@ -280,7 +280,6 @@ async def get_data(request: Request):
             from_city_name = None
         country_name = data["queryResult"]["parameters"]["country"]
         return get_country_trip_plan(from_city_name, country_name, data["session"]) 
-    
     elif intent_display_name == "Planning-City":
         city_name = data["queryResult"]["parameters"]["City"]
         return get_city(city_name)
@@ -290,5 +289,12 @@ async def get_data(request: Request):
             return random_city_recommendation(country_name)
         except:
             return random_country_recommendation()
+    elif intent_display_name == "explain.about":
+        country_name = data["queryResult"]["parameters"].get("Country")
+        if country_name is not None:
+            return get_country(country_name)
+        city_name = data["queryResult"]["parameters"].get("City")
+        if city_name is not None:
+            return get_city(city_name)
     return {}
         
