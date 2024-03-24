@@ -162,12 +162,6 @@ def get_country_trip_plan(from_city, to_country):
                         ]
                     }
                 }
-            ],
-            "outputContexts": [
-                {
-                    "name": "/contexts/from-city-setting",
-                    "lifespanCount": 1
-                }
             ]
         }
     return {
