@@ -246,6 +246,8 @@ async def get_data(request: Request):
         if country_name is not None:
             return random_city_recommendation(country_name)
         return random_country_recommendation()
+    city_name = data["queryResult"]["outputContexts"][0]["parameters"]["from-city"]
+    print(city_name)
     print(data)
     return {}
         
