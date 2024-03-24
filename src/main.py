@@ -231,22 +231,21 @@ def post_status_check():
 @app.post("/get_data")
 async def get_data(request: Request):
     data = await request.json()
-
     intent_display_name = data["queryResult"]["intent"]["displayName"]
-    if intent_display_name == "Plan your Trip.Country":
-        
+
+    if intent_display_name == "Planning-Country":
         from_city_name = None
         try:
             from_city_name = data["queryResult"]["outputContexts"][0]["parameters"]["from-city"]
         except:
             from_city_name = None
         country_name = data["queryResult"]["parameters"]["country"]
-        return get_country_trip_plan(from_city_name, country_name)
+        return get_country_trip_plan(from_city_name, country_name) 
     
-    if intent_display_name == "Plan your Trip.City":
+    elif intent_display_name == "Planning-City":
         city_name = data["queryResult"]["parameters"]["City"]
         return get_city(city_name)
-    if intent_display_name == "unsure where":
+    elif intent_display_name == "unsure where":
         city_name = data["queryResult"]["outputContexts"][0]["parameters"]["from-city"]
         try:
             country_name = data['queryResult']["parameters"]["country"]
