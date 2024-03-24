@@ -253,7 +253,9 @@ async def get_data(request: Request):
     if intent_display_name == "Planning-Country":
         from_city_name = None
         try:
-            from_city_name = data["queryResult"]["outputContexts"][0]["parameters"]["from-city"]
+            for context in data["queryResult"]["outputContexts"]:
+                if(context["name"].endswith("from-city")):
+                    from_city_name = context["parameters"]["name"]
         except:
             from_city_name = None
         country_name = data["queryResult"]["parameters"]["country"]
