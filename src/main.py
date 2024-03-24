@@ -150,7 +150,7 @@ def random_city_recommendation(country_name):
         content["fulfillmentMessages"].append(add_image("Highlight", image))
     return content
 
-def get_country_trip_plan(from_city, to_country):
+def get_country_trip_plan(from_city, to_country, session_string):
     if from_city is None:
         return {
             "fulfillmentMessages": [
@@ -161,6 +161,12 @@ def get_country_trip_plan(from_city, to_country):
                             "Which city are you situated in right now?"
                         ]
                     }
+                },
+            ],
+            "outputContexts": [
+                {
+                    "name": session_string + "/contexts/from-city-setting",
+                    "lifespanCount": 1
                 }
             ]
         }
@@ -242,7 +248,7 @@ async def get_data(request: Request):
         except:
             from_city_name = None
         country_name = data["queryResult"]["parameters"]["country"]
-        return get_country_trip_plan(from_city_name, country_name) 
+        return get_country_trip_plan(from_city_name, country_name, data["session"]) 
     
     elif intent_display_name == "Planning-City":
         city_name = data["queryResult"]["parameters"]["City"]
