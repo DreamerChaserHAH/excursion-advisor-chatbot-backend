@@ -308,10 +308,10 @@ async def get_data(request: Request):
         
     elif is_intent_the_same(intent_display_name,"explain.about") :
         country_name = data["queryResult"]["parameters"].get("Country")
-        if country_name is not None:
+        if country_name:
             return get_country(country_name)
         city_name = data["queryResult"]["parameters"].get("City")
-        if city_name is not None:
+        if city_name:
             return get_city(city_name)
     return {}
         
