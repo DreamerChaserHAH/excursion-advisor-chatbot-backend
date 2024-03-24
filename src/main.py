@@ -213,6 +213,13 @@ def get_country_trip_plan(from_city, to_country, session_string):
                 {
                     "name": session_string + "/contexts/to-city-setting",
                     "lifespanCount": 1,
+                },
+                {
+                    "name": session_string + "/contexts/to-country",
+                    "lifespanCount": 9999,
+                    "parameters": {
+                        "to-country": to_country
+                    }
                 }
             ]
     }
@@ -278,17 +285,24 @@ async def get_data(request: Request):
                     from_city_name = context["parameters"]["from-city"]
         except:
             from_city_name = None
-        country_name = data["queryResult"]["parameters"]["country"]
-        return get_country_trip_plan(from_city_name, country_name, data["session"]) 
+        to_country_name = data["queryResult"]["parameters"]["to-country"]
+        return get_country_trip_plan(from_city_name, to_country_name, data["session"]) 
+    
     elif intent_display_name == "planning.city":
         city_name = data["queryResult"]["parameters"]["City"]
         return get_city(city_name)
-    elif intent_display_name == "unsure where":
-        try:
-            country_name = data['queryResult']["parameters"]["country"]
-            return random_city_recommendation(country_name)
-        except:
+    elif intent_display_name == "random.recommendation":
+
+        to_country_name = None
+        for context in data["queryResult"]["outputContexts"]:
+            if(context["name"].endswith("to-country")):
+                to_country_name = context["parameters"]["to-country"]
+
+        if to_country_name is not None:
+            return random_city_recommendation(to_country_name)
+        else:
             return random_country_recommendation()
+        
     elif intent_display_name == "explain.about":
         country_name = data["queryResult"]["parameters"].get("Country")
         if country_name is not None:
