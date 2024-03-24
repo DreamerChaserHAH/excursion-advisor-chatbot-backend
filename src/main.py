@@ -169,8 +169,8 @@ def get_country_trip_plan(from_city, to_country):
             {
                 "text": {
                     "text": [
-                        "I see that you are departing from " + from_country + ".",
-                        "Alright! You are coming from " + from_country + "."
+                        "I see that you are departing from " + from_city + ".",
+                        "Alright! You are coming from " + from_city + "."
                     ]
                 }
             },
@@ -184,7 +184,7 @@ def get_country_trip_plan(from_city, to_country):
             {
                 "text": {
                     "text": [
-                        "Would you like some recommendations?"
+                        "Tell me if you want some random recommendations?"
                     ]
                 }
             }
