@@ -20,11 +20,11 @@ def add_image(title, image_url):
         }
     }
 
-def get_city_as_context(city_name, session):
+def get_city_as_context(city_name):
     return {
         "outputContexts": [
             {
-                "name": session + "/contexts/from-city",
+                "name":  "/contexts/from-city",
                 "lifespanCount": 9999,
                 "parameters": {
                     "name": city_name
@@ -240,8 +240,8 @@ async def get_data(request: Request):
         return get_city(city_name)
     if intent_display_name == "user.location":
         city_name = data["queryResult"]["parameters"]["City"]
-        sessionid = data["session"]
-        get_city_as_context(city_name, sessionid)
+        print(data)
+        get_city_as_context(city_name)
     if intent_display_name == "unsure where":
         country_name = data['queryResult']["parameters"]["country"]
         if country_name is not None:
