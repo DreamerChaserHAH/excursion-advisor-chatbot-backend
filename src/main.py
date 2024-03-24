@@ -275,7 +275,7 @@ async def get_data(request: Request):
         try:
             for context in data["queryResult"]["outputContexts"]:
                 if(context["name"].endswith("from-city")):
-                    from_city_name = context["parameters"]["name"]
+                    from_city_name = context["parameters"]["from-city"]
         except:
             from_city_name = None
         country_name = data["queryResult"]["parameters"]["country"]
