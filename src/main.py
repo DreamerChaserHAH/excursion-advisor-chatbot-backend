@@ -236,7 +236,7 @@ def get_city_trip_plan(from_city, to_city, session_string):
         return no_city_in_database_response()
     
     if from_city is None:
-        return from_city_empty_response()
+        return from_city_empty_response(session_string)
     
     return {
         "fulfillmentMessages": [
