@@ -362,7 +362,7 @@ async def get_data(request: Request):
         return {}
     
     if is_intent_the_same(intent_display_name, "planning.country"):
-        return get_country_trip_plan(data)
+        return get_country_trip_plan_process(data)
     elif is_intent_the_same(intent_display_name, "planning.city"):
         return get_city_trip_plan_process(data)
     
