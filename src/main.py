@@ -311,6 +311,8 @@ def get_city_trip_plan_process(data):
     from_city_name = None
     activity_type = None
     budget = None
+    to_city_name = data["queryResult"]["parameters"].get("to-city")
+
     for context in data["queryResult"]["outputContexts"]:
         if(context["name"].endswith("from-city")):
             from_city_name = context["parameters"].get("from-city")
@@ -318,16 +320,19 @@ def get_city_trip_plan_process(data):
             activity_type = context["parameters"].get("activitytype")
         if(context["name"].endswith("budget")):
             budget = context["parameters"].get("budget")
+        if(context["name"].endswith("to-city")) and to_city_name is None:
+            to_city_name = context["parameters"].get("to-city")
 
-    to_city_name = data["queryResult"]["parameters"].get("to-city")
     return get_city_trip_plan(from_city_name, to_city_name, activity_type, budget, data["session"])
 def get_country_trip_plan_process(data):
     from_city_name = None
+    to_country_name = data["queryResult"]["parameters"].get("to-country")
+
     for context in data["queryResult"]["outputContexts"]:
         if(context["name"].endswith("from-city")):
             from_city_name = context["parameters"].get("from-city")
-
-    to_country_name = data["queryResult"]["parameters"].get("to-country")
+        if(context["name"].endswith("to-country")) and to_country_name is None:
+            to_country_name = context["parameters"].get("to-country")
     return get_country_trip_plan(from_city_name, to_country_name, data["session"])    
 
 client = MongoClient(uri, server_api=ServerApi('1'))
