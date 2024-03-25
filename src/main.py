@@ -394,7 +394,7 @@ async def get_data(request: Request):
                 city_name = context["parameters"]["city"]
                 return get_city(city_name)           
     elif is_intent_the_same(intent_display_name,"activities.setting"):
-        get_city_trip_plan_process(data)
+        return get_city_trip_plan_process(data)
     elif is_intent_the_same(intent_display_name,"city.from.settings"):
         for context in data["queryResult"]["outputContexts"]:
             if(context["name"].endswith("from-city-setting")):
