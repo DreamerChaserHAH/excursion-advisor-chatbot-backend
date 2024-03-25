@@ -73,7 +73,7 @@ def get_city_as_context(city_name, session):
                 "name":  session + "/contexts/from-city",
                 "lifespanCount": 9999,
                 "parameters": {
-                    "name": city_name
+                    "from-city": city_name
                 }
             }
         ]
@@ -353,7 +353,7 @@ async def get_data(request: Request):
             if(context["name"].endswith("from-city")):
                 from_city_name = context["parameters"].get("from-city")
             if(context["name"].endswith("activity")):
-                activity_type = context["parameters"].get("activityType")
+                activity_type = context["parameters"].get("activitytype")
 
         to_city_name = data["queryResult"]["parameters"].get("to-city")
         return get_city_trip_plan(from_city_name, to_city_name, activity_type, data["session"])
@@ -376,5 +376,10 @@ async def get_data(request: Request):
         city_name = data["queryResult"]["parameters"].get("City")
         if city_name:
             return get_city(city_name)
+    elif is_intent_the_same(intent_display_name,"vague.city.yes"):
+        for context in data["queryResult"]["outputContexts"]:
+            if(context["name"].endswith("vague-city")):
+                city_name = context["parameters"]["city"]
+                return get_city(city_name)
     return {}
         
