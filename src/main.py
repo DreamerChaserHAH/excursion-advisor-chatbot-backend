@@ -422,7 +422,7 @@ async def get_data(request: Request):
             return get_city_trip_plan_process(data)
         if coming_from == "country-trip-plan":
             return get_country_trip_plan_process(data)
-    elif is_intent_the_same(intent_display_name,"budget.setting") or is_intent_the_same(intent_display_name, "city,to.settings") or is_intent_the_same(intent_display_name,"activities.setting") or is_intent_the_same(intent_display_name, "planning.city"):
+    elif is_intent_the_same(intent_display_name,"budget.setting") or is_intent_the_same(intent_display_name, "city.to.settings") or is_intent_the_same(intent_display_name,"activities.setting") or is_intent_the_same(intent_display_name, "planning.city"):
         return get_city_trip_plan_process(data)
     return {}
         
