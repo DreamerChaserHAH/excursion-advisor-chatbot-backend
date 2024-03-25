@@ -15,7 +15,7 @@ uri = os.getenv("URI")
 def is_intent_the_same(intent_name_in_request, intent_name):
     return intent_name_in_request == "z."+ intent_name
 
-def from_city_empty_response(session_string):
+def from_city_empty_response(session_string, context):
     content = get_fulfillment_message()
     content["fulfillmentMessages"].append({
         "text": {
@@ -29,7 +29,10 @@ def from_city_empty_response(session_string):
     content["outputContexts"].append(
         {
             "name": session_string + "/contexts/from-city-setting",
-            "lifespanCount": 1
+            "lifespanCount": 1,
+            "parameters": {
+                "coming-from": context
+            }
         }
     )
     return content
@@ -185,7 +188,7 @@ def get_country_trip_plan(from_city, to_country, session_string):
         return no_country_in_database_response()
     
     if from_city is None:
-        return from_city_empty_response(session_string)
+        return from_city_empty_response(session_string, "country-trip-plan")
     
     cities_list = client.ExcursionData.Cities.find({"country": ObjectId(country_information["_id"])})
     return {
@@ -235,7 +238,7 @@ def get_city_trip_plan(from_city, to_city, activity_type, budget, session_string
         return no_city_in_database_response()
     
     if from_city is None:
-        return from_city_empty_response(session_string)
+        return from_city_empty_response(session_string, "city-trip-plan")
 
     if activity_type is None:
         return {
@@ -304,6 +307,28 @@ def return_fullfillment():
         ]
     }
  
+def get_city_trip_plan_process(data):
+    from_city_name = None
+    activity_type = None
+    budget = None
+    for context in data["queryResult"]["outputContexts"]:
+        if(context["name"].endswith("from-city")):
+            from_city_name = context["parameters"].get("from-city")
+        if(context["name"].endswith("activity")):
+            activity_type = context["parameters"].get("activitytype")
+        if(context["name"].endswith("budget")):
+            budget = context["parameters"].get("budget")
+
+    to_city_name = data["queryResult"]["parameters"].get("to-city")
+    return get_city_trip_plan(from_city_name, to_city_name, activity_type, budget, data["session"])
+def get_country_trip_plan_process(data):
+    from_city_name = None
+    for context in data["queryResult"]["outputContexts"]:
+        if(context["name"].endswith("from-city")):
+            from_city_name = context["parameters"].get("from-city")
+
+    to_country_name = data["queryResult"]["parameters"].get("to-country")
+    return get_country_trip_plan(from_city_name, to_country_name, data["session"])    
 
 client = MongoClient(uri, server_api=ServerApi('1'))
 
@@ -332,34 +357,14 @@ async def get_data(request: Request):
         for context in data["queryResult"]["outputContexts"]:
             if(context["name"].endswith("vague-city")):
                 city_name = context["parameters"]["city"]
-                return get_city_as_context(city_name, data["session"])
-    
+                return get_city_as_context(city_name, data["session"])    
     elif is_intent_the_same(intent_display_name, "vague.city-gothere"):
         return {}
     
     if is_intent_the_same(intent_display_name, "planning.country"):
-        from_city_name = None
-        for context in data["queryResult"]["outputContexts"]:
-            if(context["name"].endswith("from-city")):
-                from_city_name = context["parameters"].get("from-city")
-
-        to_country_name = data["queryResult"]["parameters"].get("to-country")
-        return get_country_trip_plan(from_city_name, to_country_name, data["session"]) 
-    
+        return get_country_trip_plan(data)
     elif is_intent_the_same(intent_display_name, "planning.city"):
-        from_city_name = None
-        activity_type = None
-        budget = None
-        for context in data["queryResult"]["outputContexts"]:
-            if(context["name"].endswith("from-city")):
-                from_city_name = context["parameters"].get("from-city")
-            if(context["name"].endswith("activity")):
-                activity_type = context["parameters"].get("activitytype")
-            if(context["name"].endswith("budget")):
-                budget = context["parameters"].get("budget")
-
-        to_city_name = data["queryResult"]["parameters"].get("to-city")
-        return get_city_trip_plan(from_city_name, to_city_name, activity_type, budget, data["session"])
+        return get_city_trip_plan_process(data)
     
     elif is_intent_the_same(intent_display_name,"random.recommendation"):
         to_country_name = None
@@ -370,8 +375,7 @@ async def get_data(request: Request):
         if to_country_name is not None:
             return random_city_recommendation(to_country_name)
         else:
-            return random_country_recommendation()
-        
+            return random_country_recommendation()   
     elif is_intent_the_same(intent_display_name,"explain.about") :
         country_name = data["queryResult"]["parameters"].get("Country")
         if country_name:
@@ -383,21 +387,16 @@ async def get_data(request: Request):
         for context in data["queryResult"]["outputContexts"]:
             if(context["name"].endswith("vague-city")):
                 city_name = context["parameters"]["city"]
-                return get_city(city_name)
-            
+                return get_city(city_name)           
     elif is_intent_the_same(intent_display_name,"activities.setting"):
-        from_city_name = None
-        activity_type = None
-        budget = None
+        get_city_trip_plan_process(data)
+    elif is_intent_the_same(intent_display_name,"city.from.settings"):
         for context in data["queryResult"]["outputContexts"]:
-            if(context["name"].endswith("from-city")):
-                from_city_name = context["parameters"].get("from-city")
-            if(context["name"].endswith("activity")):
-                activity_type = context["parameters"].get("activitytype")
-            if(context["name"].endswith("budget")):
-                budget = context["parameters"].get("budget")
-
-        to_city_name = data["queryResult"]["parameters"].get("to-city")
-        return get_city_trip_plan(from_city_name, to_city_name, activity_type, budget, data["session"])
+            if(context["name"].endswith("from-city-setting")):
+                coming_from = context["parameters"].get("coming-from")
+        if coming_from == "city-trip-plan":
+            return get_city_trip_plan_process(data)
+        if coming_from == "country-trip-plan":
+            return get_country_trip_plan_process(data)
     return {}
         
