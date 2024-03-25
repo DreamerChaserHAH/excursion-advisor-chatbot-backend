@@ -388,13 +388,10 @@ async def get_data(request: Request):
                 city_name = context["parameters"]["city"]
                 return get_city_as_context(city_name, data["session"])    
     elif is_intent_the_same(intent_display_name, "vague.city-gothere"):
-        return {}
-    
-    if is_intent_the_same(intent_display_name, "planning.country"):
+        return {}   
+    elif is_intent_the_same(intent_display_name, "planning.country"):
         return get_country_trip_plan_process(data)
-    elif is_intent_the_same(intent_display_name, "planning.city"):
-        return get_city_trip_plan_process(data)
-    
+        return get_city_trip_plan_process(data)    
     elif is_intent_the_same(intent_display_name,"random.recommendation"):
         to_country_name = None
         for context in data["queryResult"]["outputContexts"]:
@@ -417,8 +414,6 @@ async def get_data(request: Request):
             if(context["name"].endswith("vague-city")):
                 city_name = context["parameters"]["city"]
                 return get_city(city_name)           
-    elif is_intent_the_same(intent_display_name,"activities.setting"):
-        return get_city_trip_plan_process(data)
     elif is_intent_the_same(intent_display_name,"city.from.settings"):
         for context in data["queryResult"]["outputContexts"]:
             if(context["name"].endswith("from-city-setting")):
@@ -427,7 +422,7 @@ async def get_data(request: Request):
             return get_city_trip_plan_process(data)
         if coming_from == "country-trip-plan":
             return get_country_trip_plan_process(data)
-    elif is_intent_the_same(intent_display_name,"budget.setting"):
+    elif is_intent_the_same(intent_display_name,"budget.setting") or is_intent_the_same(intent_display_name, "city,to.settings") or is_intent_the_same(intent_display_name,"activities.setting") or is_intent_the_same(intent_display_name, "planning.city"):
         return get_city_trip_plan_process(data)
     return {}
         
