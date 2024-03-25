@@ -233,13 +233,10 @@ def get_country_trip_plan(from_city, to_country, session_string):
 
 def get_city_trip_plan(from_city, to_city, activity_type, budget, session_string):
     city_information = client.ExcursionData.Cities.find_one({"name": to_city.lower()})
-    
     if city_information is None:
-        return no_city_in_database_response()
-    
+        return no_city_in_database_response()   
     if from_city is None:
         return from_city_empty_response(session_string, "city-trip-plan")
-
     if activity_type is None:
         return {
             "fulfillmentMessages": [
@@ -317,12 +314,12 @@ def get_city_trip_plan_process(data):
         if(context["name"].endswith("from-city")):
             from_city_name = context["parameters"].get("from-city")
         if(context["name"].endswith("activity")):
-            activity_type = context["parameters"].get("activitytype")
+            activity_type = context["parameters"].get("activity-type")
         if(context["name"].endswith("budget")):
             budget = context["parameters"].get("budget")
         if(context["name"].endswith("to-city")) and to_city_name is None:
             to_city_name = context["parameters"].get("to-city")
-
+            
     return get_city_trip_plan(from_city_name, to_city_name, activity_type, budget, data["session"])
 def get_country_trip_plan_process(data):
     from_city_name = None
