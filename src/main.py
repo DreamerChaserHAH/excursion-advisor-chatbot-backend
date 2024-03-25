@@ -262,6 +262,33 @@ def get_city_trip_plan(from_city, to_city, activity_type, budget, session_string
                 }
             ]
         }
+    if budget is None:
+        return {
+            "fulfillmentMessages": [
+                {
+                    "text": {
+                        "text": [
+                            "What is your budget for the trip to " + to_city + "?",
+                            "How much are you planning to spend for your trip to " + to_city + "?"
+                        ]
+                    }
+                }
+            ],
+            "outputContexts": [
+                {
+                    "name": session_string + "/contexts/budget-setting",
+                    "lifespanCount": 1,
+                },
+                {
+                    "name": session_string + "/contexts/to-city",
+                    "lifespanCount": 9999,
+                    "parameters": {
+                        "to-city": to_city,
+                        "activity-type": activity_type
+                    }
+                }
+            ]
+        }
 
     return {
         "fulfillmentMessages": [
@@ -319,7 +346,7 @@ def get_city_trip_plan_process(data):
             budget = context["parameters"].get("budget")
         if(context["name"].endswith("to-city")) and to_city_name is None:
             to_city_name = context["parameters"].get("to-city")
-            
+
     return get_city_trip_plan(from_city_name, to_city_name, activity_type, budget, data["session"])
 def get_country_trip_plan_process(data):
     from_city_name = None
@@ -400,5 +427,7 @@ async def get_data(request: Request):
             return get_city_trip_plan_process(data)
         if coming_from == "country-trip-plan":
             return get_country_trip_plan_process(data)
+    elif is_intent_the_same(intent_display_name,"budget.setting"):
+        return get_city_trip_plan_process(data)
     return {}
         
