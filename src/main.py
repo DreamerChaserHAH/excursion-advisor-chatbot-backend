@@ -573,6 +573,6 @@ async def get_data(request: Request):
     elif is_intent_the_same(intent_display_name,"whatyouknow"):
         return whatiknow()
     elif is_intent_the_same(intent_display_name, "travel.safety"):
-        return travelsafety_process()
+        return travelsafety_process(data)
     return {}
         
