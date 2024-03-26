@@ -469,7 +469,7 @@ def travelsafety_process(data):
             {
                 "text": {
                     "text": [
-                        "Here is the travel safety information for \n'" + country_name.capitalize() + ":\n" + country_information.get["safetydescription"] + "'"
+                        "Here is the travel safety information for \n'" + country_name.capitalize() + ":\n" + country_information.get("safetydescription") + "'"
                     ]
                 }
             }
