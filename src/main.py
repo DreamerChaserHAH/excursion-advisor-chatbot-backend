@@ -443,6 +443,39 @@ def get_country_trip_plan_process(data):
 
 client = MongoClient(uri, server_api=ServerApi('1'))
 
+def travelsafety_process(data):
+    country_name = data["queryResult"]["parameters"].get("Country")
+    if country_name is None:
+        for context in data["queryResult"]["outputContexts"]:
+            if context["name"].endswith("random-country-recommendation"):
+                country_name = context["parameters"].get("country")
+    if country_name is None:
+        return {
+            "fulfillmentMessages": [
+                {
+                    "text": {
+                        "text": [
+                            "I'm sorry, I can't find the country you are looking for. Please try again."
+                        ]
+                    }
+                }
+            ]
+        }
+    country_information = client.ExcursionData.Countries.find_one({"name": country_name.lower()})
+    if country_information is None:
+        return
+    return {
+        "fulfillmentMessages": [
+            {
+                "text": {
+                    "text": [
+                        "Here is the travel safety information for \n'" + country_name.capitalize() + ":\n" + country_information.get["safetydescription"] + "'"
+                    ]
+                }
+            }
+        ]
+    }
+
 def ping_mongodb():
     try:
         client.admin.command('ping')
@@ -538,7 +571,8 @@ async def get_data(request: Request):
     elif is_intent_the_same(intent_display_name,"budget.setting") or is_intent_the_same(intent_display_name, "city.to.settings") or is_intent_the_same(intent_display_name,"activities.setting") or is_intent_the_same(intent_display_name, "planning.city"):
         return get_city_trip_plan_process(data)
     elif is_intent_the_same(intent_display_name,"whatyouknow"):
-        print("don't know log")
         return whatiknow()
+    elif is_intent_the_same(intent_display_name, "travel.safety"):
+        return travelsafety_process()
     return {}
         
