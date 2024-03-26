@@ -443,7 +443,7 @@ async def get_data(request: Request):
 
     if is_intent_the_same(intent_display_name, "city.from.settings.yes") or is_intent_the_same(intent_display_name, "vague.gothere.yes") or is_intent_the_same(intent_display_name, "country.from.yes") or is_intent_the_same(intent_display_name, "city.from.settings.yes") or is_intent_the_same(intent_display_name, "random.recommendation.no") or is_intent_the_same(intent_display_name, "city.from.default.yes") :
        return {
-            "followupEvent": {
+            "followupEventInput": {
                 "name": "RandomRecommendations"
             }
         }
