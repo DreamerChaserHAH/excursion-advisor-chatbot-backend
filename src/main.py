@@ -49,6 +49,7 @@ def no_city_in_database_response():
         ]
     }
 def whatiknow():
+    countries = client.ExcursionData.Countries.find({}, {"name": 1})
     return {
         "fulfillmentMessages": [
             {
