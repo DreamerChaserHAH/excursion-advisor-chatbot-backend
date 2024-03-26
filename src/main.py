@@ -432,7 +432,7 @@ async def get_data(request: Request):
     elif is_intent_the_same(intent_display_name, "planning.country"):
         return get_country_trip_plan_process(data)
         return get_city_trip_plan_process(data)    
-    elif is_intent_the_same(intent_display_name,"random.recommendation") or is_intent_the_same(intent_display_name, "vague.gothere.yes"):
+    elif is_intent_the_same(intent_display_name,"random.recommendation") or is_intent_the_same(intent_display_name, "vague.gothere.yes") or is_intent_the_same(intent_display_name, "country.from.yes"):
         to_country_name = None
         for context in data["queryResult"]["outputContexts"]:
             if(context["name"].endswith("to-country")):
