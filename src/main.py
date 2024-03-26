@@ -401,8 +401,17 @@ async def get_data(request: Request):
     elif is_intent_the_same(intent_display_name, "vague.city.go.there"):
         for context in data["queryResult"]["outputContexts"]:
             if(context["name"].endswith("vague-city")):
-                city_name = context["parameters"]["city"]
-                return to_city_as_context(city_name, data["session"])    
+                city_name = context["parameters"]["city"]  
+                data["queryResult"]["outputContexts"].append(
+                    {
+                        "name": data["session"] + "/contexts/to-city",
+                        "lifespanCount": 1,
+                        "parameters": {
+                    "to-city": city_name
+                        }
+                    }
+                )
+                return get_city_trip_plan_process(data) 
     elif is_intent_the_same(intent_display_name, "planning.country"):
         return get_country_trip_plan_process(data)
         return get_city_trip_plan_process(data)    
