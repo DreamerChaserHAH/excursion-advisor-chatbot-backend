@@ -464,7 +464,7 @@ async def get_data(request: Request):
         if to_country_name is not None:
             return random_city_recommendation(to_country_name)
         else:
-            return random_country_recommendation()   
+            return random_country_recommendation(data["session"])   
     elif is_intent_the_same(intent_display_name,"explain.about") or is_intent_the_same(intent_display_name, "random.recommendation.yes") :
         country_name = data["queryResult"]["parameters"].get("Country")
         if country_name:
