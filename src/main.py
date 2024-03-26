@@ -62,7 +62,7 @@ def no_country_in_database_response():
             {
                 "text": {
                     "text": [
-                        "However, here is a list of countries we supports at this moment: " + ",\n ".join([country["name"].capitalize() for country in countries]) + ".",
+                        "However, here is a list of countries 𝗪𝗮𝗻𝗱𝗲𝗿 know at this particular moment:\n" + ",\n ".join([country["name"].capitalize() for country in countries]) + ".",
                     ]
                 }
             }
@@ -441,7 +441,13 @@ async def get_data(request: Request):
     print(data)
     intent_display_name = data["queryResult"]["intent"]["displayName"]
 
-    if is_intent_the_same(intent_display_name, "vague.city-livingthere"):
+    if is_intent_the_same(intent_display_name, "city.from.settings.yes") or is_intent_the_same(intent_display_name, "vague.gothere.yes") or is_intent_the_same(intent_display_name, "country.from.yes") or is_intent_the_same(intent_display_name, "city.from.settings.yes") or is_intent_the_same(intent_display_name, "random.recommendation.no") :
+       return {
+            "followupEvent": {
+                "name": "RandomRecommendations"
+            }
+        }
+    elif is_intent_the_same(intent_display_name, "vague.city-livingthere"):
         for context in data["queryResult"]["outputContexts"]:
             if(context["name"].endswith("vague-city")):
                 city_name = context["parameters"]["city"]
@@ -463,7 +469,7 @@ async def get_data(request: Request):
     elif is_intent_the_same(intent_display_name, "planning.country"):
         return get_country_trip_plan_process(data)
         return get_city_trip_plan_process(data)    
-    elif is_intent_the_same(intent_display_name,"random.recommendation") or is_intent_the_same(intent_display_name, "vague.gothere.yes") or is_intent_the_same(intent_display_name, "country.from.yes") or is_intent_the_same(intent_display_name, "city.from.settings.yes") or is_intent_the_same(intent_display_name, "random.recommendation.no"):
+    elif is_intent_the_same(intent_display_name,"random.recommendation"):
         to_country_name = None
         for context in data["queryResult"]["outputContexts"]:
             if(context["name"].endswith("to-country")):
