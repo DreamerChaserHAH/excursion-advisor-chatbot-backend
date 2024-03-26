@@ -48,6 +48,19 @@ def no_city_in_database_response():
             }
         ]
     }
+def whatiknow():
+    return {
+        "fulfillmentMessages": [
+            {
+                "text": {
+                    "text": [
+                        "However, here is a list of countries 𝗪𝗮𝗻𝗱𝗲𝗿 know at this particular moment:\n" + ",\n ".join([country["name"].capitalize() for country in countries]) + ".",
+                    ]
+                }
+            }
+        ]
+    }
+
 def no_country_in_database_response():
     countries = client.ExcursionData.Countries.find({}, {"name": 1})
     return {
@@ -511,5 +524,7 @@ async def get_data(request: Request):
             return get_country_trip_plan_process(data)
     elif is_intent_the_same(intent_display_name,"budget.setting") or is_intent_the_same(intent_display_name, "city.to.settings") or is_intent_the_same(intent_display_name,"activities.setting") or is_intent_the_same(intent_display_name, "planning.city"):
         return get_city_trip_plan_process(data)
+    elif is_intent_the_same(intent_display_name,"whatyouknow"):
+        return whatiknow()
     return {}
         
