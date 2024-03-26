@@ -49,12 +49,20 @@ def no_city_in_database_response():
         ]
     }
 def no_country_in_database_response():
+    countries = client.ExcursionData.Countries.find({}, {"name": 1})
     return {
         "fulfillmentMessages": [
             {
                 "text": {
                     "text": [
-                        "Oops! It seems that 𝗪𝗮𝗻𝗱𝗲𝗿 doesn't have information about the country of your choice yet! But no worries, 𝗪𝗮𝗻𝗱𝗲𝗿 will notify the developers about your interest. Sank kyu!"
+                        "Oops! It seems that 𝗪𝗮𝗻𝗱𝗲𝗿 doesn't have information about the country of your choice yet! But no worries, 𝗪𝗮𝗻𝗱𝗲𝗿 will notify the developers about your interest~"
+                    ]
+                }
+            },
+            {
+                "text": {
+                    "text": [
+                        "However, here is a list of countries we supports at this moment: " + ",\n ".join([country["name"].capitalize() for country in countries]) + ".",
                     ]
                 }
             }
