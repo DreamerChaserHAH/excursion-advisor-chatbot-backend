@@ -464,6 +464,8 @@ def travelsafety_process(data):
     country_information = client.ExcursionData.Countries.find_one({"name": country_name.lower()})
     if country_information is None:
         return
+    if country_information.get("safetydescription") is None:
+        return
     return {
         "fulfillmentMessages": [
             {
