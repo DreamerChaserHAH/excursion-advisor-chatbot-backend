@@ -150,6 +150,11 @@ def random_country_recommendation():
                         "How about " + random_country["name"].capitalize() + "?",
                         "Is " + random_country["name"].capitalize() + " within your consideration?"
                     ]
+                },
+                "text": {
+                    "text": [
+                        "Do you want to me to tell you what I know about it?"
+                    ]
                 }
             },
             add_image(random_country["name"].capitalize() + "'s Flag", random_country["flag"])
@@ -183,6 +188,11 @@ def random_city_recommendation(country_name):
                     "text": [
                         "How about " + random_city["name"].capitalize() + "?",
                         "Is " + random_city["name"].capitalize() + " within your consideration?"
+                    ]
+                },
+                "text": {
+                    "text": [
+                        "Do you want to me to tell you what I know about it?"
                     ]
                 }
             },
