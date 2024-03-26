@@ -477,6 +477,11 @@ async def get_data(request: Request):
         city_name = data["queryResult"]["parameters"].get("City")
         if city_name:
             return get_city(city_name)
+    elif is_intent_the_same(intent_display_name,"vague.country.yes"):
+        for context in data["queryResult"]["outputContexts"]:
+            if(context["name"].endswith("vague-country")):
+                country_name = context["parameters"]["country"]
+                return get_country(country_name)
     elif is_intent_the_same(intent_display_name,"vague.city.yes"):
         for context in data["queryResult"]["outputContexts"]:
             if(context["name"].endswith("vague-city")):
