@@ -69,7 +69,7 @@ def add_image(title, image_url):
         }
     }
 
-def get_city_as_context(city_name, session):
+def from_city_as_context(city_name, session):
     return {
         "outputContexts": [
             {
@@ -81,7 +81,18 @@ def get_city_as_context(city_name, session):
             }
         ]
     }
-
+def to_city_as_context(city_name, session):
+    return {
+        "outputContexts": [
+            {
+                "name":  session + "/contexts/to-city",
+                "lifespanCount": 9999,
+                "parameters": {
+                    "to-city": city_name
+                }
+            }
+        ]
+    }
 def get_fulfillment_message():
     return {
         "fulfillmentMessages": [
@@ -386,9 +397,12 @@ async def get_data(request: Request):
         for context in data["queryResult"]["outputContexts"]:
             if(context["name"].endswith("vague-city")):
                 city_name = context["parameters"]["city"]
-                return get_city_as_context(city_name, data["session"])    
-    elif is_intent_the_same(intent_display_name, "vague.city-gothere"):
-        return {}   
+                return from_city_as_context(city_name, data["session"])    
+    elif is_intent_the_same(intent_display_name, "vague.city.go.there"):
+        for context in data["queryResult"]["outputContexts"]:
+            if(context["name"].endswith("vague-city")):
+                city_name = context["parameters"]["city"]
+                return to_city_as_context(city_name, data["session"])    
     elif is_intent_the_same(intent_display_name, "planning.country"):
         return get_country_trip_plan_process(data)
         return get_city_trip_plan_process(data)    
