@@ -499,7 +499,7 @@ async def get_data(request: Request):
                 to_country_name = context["parameters"].get("to-country")
 
         if to_country_name is not None:
-            return random_city_recommendation(to_country_name)
+            return random_city_recommendation(to_country_name, data["session"])
         else:
             return random_country_recommendation(data["session"])   
     elif is_intent_the_same(intent_display_name,"explain.about") or is_intent_the_same(intent_display_name, "random.recommendation.yes") :
