@@ -195,7 +195,7 @@ def random_country_recommendation(session_string):
     }
     return content
 
-def random_city_recommendation(country_name):
+def random_city_recommendation(country_name, session_string):
     country_information = client.ExcursionData.Countries.find_one({"name": country_name.lower()})
     if(country_information is None):
         return {
@@ -229,6 +229,15 @@ def random_city_recommendation(country_name):
                     "text": [
                         "Do you want to me to tell you what I know about it?"
                     ]
+                }
+            }
+        ],
+        "outputContexts": [
+            {
+                "name": session_string + "/contexts/random-city-recommendation",
+                "lifespanCount": 1,
+                "parameters": {
+                    "city": random_city["name"]
                 }
             }
         ]
@@ -503,6 +512,9 @@ async def get_data(request: Request):
         if country_name:
             return get_country(country_name)
         city_name = data["queryResult"]["parameters"].get("City")
+        for context in data["queryResult"]["outputContexts"]:
+            if context["name"].endswith("random-city-recommendation"):
+                city_name = context["parameters"].get("city")
         if city_name:
             return get_city(city_name)
     elif is_intent_the_same(intent_display_name,"vague.country.yes"):
