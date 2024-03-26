@@ -525,6 +525,7 @@ async def get_data(request: Request):
     elif is_intent_the_same(intent_display_name,"budget.setting") or is_intent_the_same(intent_display_name, "city.to.settings") or is_intent_the_same(intent_display_name,"activities.setting") or is_intent_the_same(intent_display_name, "planning.city"):
         return get_city_trip_plan_process(data)
     elif is_intent_the_same(intent_display_name,"whatyouknow"):
+        print("don't know log")
         return whatiknow()
     return {}
         
