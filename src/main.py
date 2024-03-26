@@ -102,7 +102,7 @@ def get_fulfillment_message():
 def get_country(country_name):
     country_information = client.ExcursionData.Countries.find_one({"name": country_name.lower()})
     if country_information is None:
-        no_country_in_database_response()
+        return no_country_in_database_response()
     
     cities_list = client.ExcursionData.Cities.find({"country": ObjectId(country_information["_id"])})
 
