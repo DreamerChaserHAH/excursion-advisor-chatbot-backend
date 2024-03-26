@@ -139,7 +139,7 @@ def get_city(city_name):
         content["fulfillmentMessages"].append(add_image("Highlight", image))
     return content
 
-def random_country_recommendation():
+def random_country_recommendation(session_string):
     countries = list(client.ExcursionData.Countries.aggregate([{"$sample": {"size": 1}}]))
     random_country = countries[0]
     content =  {
@@ -158,6 +158,15 @@ def random_country_recommendation():
                     "text": [
                         "Do you want to me to tell you what I know about it?"
                     ]
+                }
+            }
+        ],
+        "outputContexts": [
+            {
+                "name": session_string + "/contexts/to-country",
+                "lifespanCount": 9999,
+                "parameters": {
+                    "to-country": random_country["name"]
                 }
             }
         ]
@@ -456,8 +465,13 @@ async def get_data(request: Request):
             return random_city_recommendation(to_country_name)
         else:
             return random_country_recommendation()   
-    elif is_intent_the_same(intent_display_name,"explain.about") :
+    elif is_intent_the_same(intent_display_name,"explain.about") or is_intent_the_same(intent_display_name, "random.recommendation.yes") :
         country_name = data["queryResult"]["parameters"].get("Country")
+        if country_name:
+            for context in data["queryResult"]["outputContexts"]:
+                if context["name"].endswith("to-country"):
+                    country_name = context["parameters"].get("to-country")
+
         if country_name:
             return get_country(country_name)
         city_name = data["queryResult"]["parameters"].get("City")
