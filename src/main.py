@@ -163,10 +163,10 @@ def random_country_recommendation(session_string):
         ],
         "outputContexts": [
             {
-                "name": session_string + "/contexts/to-country",
-                "lifespanCount": 9999,
+                "name": session_string + "/contexts/random-country-recommendation",
+                "lifespanCount": 1,
                 "parameters": {
-                    "to-country": random_country["name"]
+                    "country": random_country["name"]
                 }
             }
         ]
@@ -467,10 +467,10 @@ async def get_data(request: Request):
             return random_country_recommendation(data["session"])   
     elif is_intent_the_same(intent_display_name,"explain.about") or is_intent_the_same(intent_display_name, "random.recommendation.yes") :
         country_name = data["queryResult"]["parameters"].get("Country")
-        if country_name:
+        if country_name is None:
             for context in data["queryResult"]["outputContexts"]:
-                if context["name"].endswith("to-country"):
-                    country_name = context["parameters"].get("to-country")
+                if context["name"].endswith("random-country-recommendation"):
+                    country_name = context["parameters"].get("country")
 
         if country_name:
             return get_country(country_name)
