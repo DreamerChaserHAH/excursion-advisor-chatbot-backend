@@ -247,7 +247,17 @@ def get_city_trip_plan(from_city, to_city, activity_type, budget, session_string
     if city_information is None:
         return no_city_in_database_response()   
     if from_city is None:
-        return from_city_empty_response(session_string, "city-trip-plan")
+        content = from_city_empty_response(session_string, "city-trip-plan")
+        content["outputContexts"].append(
+            {
+                "name": session_string + "/contexts/to-city",
+                "lifespanCount": 9999,
+                "parameters": {
+                    "to-city": to_city
+                }
+            }
+        )
+        return content
     if activity_type is None:
         return {
             "fulfillmentMessages": [
