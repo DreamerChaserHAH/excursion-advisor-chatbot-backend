@@ -329,6 +329,13 @@ def get_city_trip_plan(from_city, to_city, activity_type, budget, session_string
                     "parameters": {
                         "to-city": to_city
                     }
+                },
+                {
+                    "name": session_string + "/contexts/budget",
+                    "lifespanCount": 9999,
+                    "parameters": {
+                        "budget": budget
+                    }
                 }
             ]
     }
