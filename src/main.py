@@ -308,15 +308,6 @@ def get_city_trip_plan(from_city, to_city, activity_type, budget, session_string
         return content
     if activity_type is None:
         return {
-            "fulfillmentMessages": [
-                {
-                    "text": {
-                        "text": [
-                            "What kind of activities are you interested in near " + to_city + "?\nMy creators have created 2 categories of activities: 𝗔𝗱𝘃𝗲𝗻𝘁𝘂𝗿𝗲𝘀 and Sightseeing.",
-                        ]
-                    }
-                }
-            ],
             "followupEventInput": {
                 "name": "ActivitiesSettings",
             },
@@ -332,21 +323,10 @@ def get_city_trip_plan(from_city, to_city, activity_type, budget, session_string
         }
     if budget is None:
         return {
-            "fulfillmentMessages": [
-                {
-                    "text": {
-                        "text": [
-                            "What is your budget for the trip to " + to_city + "?",
-                            "How much are you planning to spend for your trip to " + to_city + "?"
-                        ]
-                    }
-                }
-            ],
+            "followupEventInput": {
+                "name": "BudgetSettings",
+            },
             "outputContexts": [
-                {
-                    "name": session_string + "/contexts/budget-setting",
-                    "lifespanCount": 1,
-                },
                 {
                     "name": session_string + "/contexts/to-city",
                     "lifespanCount": 9999,
