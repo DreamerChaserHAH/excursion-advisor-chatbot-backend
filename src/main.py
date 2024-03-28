@@ -423,7 +423,7 @@ def get_city_budget_information(city, nights, budget):
         }
     
     number_of_nights = nights if nights else 1
-    if budget is not None:
+    if budget is not None and budget != "":
         if int(budget) < int(number_of_nights) * budget_information["low"]:
             return {
                 "fulfillmentMessages": [
