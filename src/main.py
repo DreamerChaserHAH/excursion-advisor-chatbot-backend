@@ -371,8 +371,8 @@ def get_city_trip_plan(from_city, to_city, activity_type, budget, session_string
                 }
             }
         ],
-        "BudgetEvent": {
-            "name": "RandomRecommendations",
+        "followupEventInput": {
+            "name": "BudgetEvents",
             "parameters": {
                 "City": to_city,
                 "Budget": budget
