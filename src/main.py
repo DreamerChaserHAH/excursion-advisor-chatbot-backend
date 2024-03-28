@@ -317,11 +317,10 @@ def get_city_trip_plan(from_city, to_city, activity_type, budget, session_string
                     }
                 }
             ],
+            "followupEventInput": {
+                "name": "ActivitiesSettings",
+            },
             "outputContexts": [
-                {
-                    "name": session_string + "/contexts/activities-setting",
-                    "lifespanCount": 1,
-                },
                 {
                     "name": session_string + "/contexts/to-city",
                     "lifespanCount": 9999,
