@@ -445,6 +445,11 @@ def get_city_budget_information(city, nights, budget):
                 "text": [
                     "The budget range for a trip to " + city.capitalize() + " is between $" + str(int(number_of_nights) * budget_information["low"]) + " and $" + str(int(number_of_nights) * budget_information["high"]) + " for " + str(number_of_nights) + " nights."
                 ]
+            },
+            "text":{
+                "text":[
+                    "Anything else?"
+                ]
             }
         }
     ]
