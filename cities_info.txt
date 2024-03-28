@@ -1,0 +1,44 @@
+Kuala Lumpur,20,200
+George Town,10,100
+Ottawa,30,300
+Toronto,20,250
+Yangon,10,100
+Mandalay,10,80
+Pretoria,20,150
+Cape Town,15,200
+Brasilia,25,200
+Rio de Janeiro,20,300
+Madrid,30,250
+Barcelona,25,300
+Rabat,20,150
+Casablanca,20,200
+London,40,500
+Birmingham,30,200
+Nairobi,20,150
+Mombasa,15,100
+Beijing,30,250
+Shanghai,40,300
+Tokyo,50,400
+Nara,30,200
+Sydney,50,400
+Melbourne,40,350
+Seoul,30,300
+Busan,20,200
+Paris,50,400
+Marseille,30,250
+Moscow,40,300
+Saint Petersburg,30,250
+Cairo,20,150
+Alexandria,15,100
+Amman,20,200
+Zarqa,15,100
+Istanbul,25,250
+Ankara,20,150
+Washington,50,400
+New York,60,500
+Abu Dhabi,60,400
+Dubai,50,500
+Doha,60,400
+Al Rayyan,50,350
+Riyadh,40,300
+Jeddah,30,250

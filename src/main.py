@@ -120,7 +120,6 @@ def get_fulfillment_message():
         "fulfillmentMessages": [
         ]
     }
-
 def get_country(country_name):
     country_information = client.ExcursionData.Countries.find_one({"name": country_name.lower()})
     if country_information is None:
@@ -140,7 +139,6 @@ def get_country(country_name):
     for image in country_information["highlights"]:
         content["fulfillmentMessages"].append(add_image("Highlight", image))
     return content
-
 def get_city(city_name):
     city_information = client.ExcursionData.Cities.find_one({"name": city_name.lower()})
     if city_information is None:
@@ -160,7 +158,6 @@ def get_city(city_name):
     for image in city_information["highlights"]:
         content["fulfillmentMessages"].append(add_image("Highlight", image))
     return content
-
 def random_country_recommendation(session_string):
     countries = list(client.ExcursionData.Countries.aggregate([{"$sample": {"size": 1}}]))
     random_country = countries[0]
@@ -194,7 +191,6 @@ def random_country_recommendation(session_string):
         ]
     }
     return content
-
 def random_city_recommendation(country_name, session_string):
     country_information = client.ExcursionData.Countries.find_one({"name": country_name.lower()})
     if(country_information is None):
@@ -245,7 +241,6 @@ def random_city_recommendation(country_name, session_string):
     for image in random_city["highlights"]:
         content["fulfillmentMessages"].append(add_image("Highlight", image))
     return content
-
 def get_country_trip_plan(from_city, to_country, session_string):
     
     country_information = client.ExcursionData.Countries.find_one({"name": to_country.lower()})
@@ -295,7 +290,6 @@ def get_country_trip_plan(from_city, to_country, session_string):
                 }
             ]
     }
-
 def get_city_trip_plan(from_city, to_city, activity_type, budget, session_string):
     city_information = client.ExcursionData.Cities.find_one({"name": to_city.lower()})
     if city_information is None:
@@ -393,6 +387,67 @@ def get_city_trip_plan(from_city, to_city, activity_type, budget, session_string
                 }
             ]
     }
+def get_country_budget_information():
+    content = get_fulfillment_message()
+    content["fulfillmentMessages"].append({
+        "text": {
+            "text": [
+                "At this particular momemt, 𝗪𝗮𝗻𝗱𝗲𝗿 have no information about specific budget range in specific countries"
+            ]
+        }
+    })
+    content["fulfillmentMessages"].append({
+        "text": {
+            "text": [
+                "However, 𝗪𝗮𝗻𝗱𝗲𝗿 can provide budget information about specific cities in specific countries however"
+            ]
+        }
+    })
+    return content
+def get_city_budget_information(city, nights, budget):
+    city_information = client.ExcursionData.Cities.find_one({"name": city.lower()})
+    if city_information is None:
+        return no_city_in_database_response()
+    budget_information = client.ExcursionData.Budget.find_one({"city": ObjectId(city_information["_id"])})
+    if budget_information is None:
+        return {
+            "fulfillmentMessages": [
+                {
+                    "text": {
+                        "text": [
+                            "At this particular momemt, 𝗪𝗮𝗻𝗱𝗲𝗿 have no information about specific budget range in " + city.capitalize()
+                        ]
+                    }
+                }
+            ]
+        }
+    
+    number_of_nights = nights if nights else 1
+    if budget < number_of_nights * budget_information["low"]:
+        return {
+            "fulfillmentMessages": [
+                {
+                    "text": {
+                        "text": [
+                            "The budget range for a trip to " + city.capitalize() + " is between $" + str(number_of_nights * budget_information["low"]) + " and $" + str(number_of_nights * budget_information["high"]) + " for " + str(number_of_nights) + " nights.",
+                            "It seems that your budget is too low for a trip to " + city.capitalize() + "."
+                        ]
+                    }
+                }
+            ]
+        }
+    
+    return {
+    "fulfillmentMessages": [
+        {
+            "text": {
+                "text": [
+                    "The budget range for a trip to " + city.capitalize() + " is between $" + str(number_of_nights * budget_information["low"]) + " and $" + str(number_of_nights * budget_information["high"]) + " for " + str(number_of_nights) + " nights."
+                ]
+            }
+        }
+    ]
+    }
 
 def return_fullfillment():
     return {
@@ -477,6 +532,14 @@ def travelsafety_process(data):
             }
         ]
     }
+
+def get_budget_range_process(data):
+    city = data["queryResult"]["parameters"].get("City")
+    budget = data["queryResult"]["parameters"].get("Budget")
+    nights = data["queryResult"]["parameters"].get("Nights")
+    if city is not None:
+        return get_city_budget_information(city, nights, budget)
+    return get_country_budget_information()
 
 def ping_mongodb():
     try:
@@ -576,5 +639,7 @@ async def get_data(request: Request):
         return whatiknow()
     elif is_intent_the_same(intent_display_name, "travel.safety"):
         return travelsafety_process(data)
+    elif is_intent_the_same(intent_display_name, "budget.range"):
+        return get_budget_range_process(data)
     return {}
         
