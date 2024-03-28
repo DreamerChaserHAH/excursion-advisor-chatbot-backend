@@ -423,13 +423,13 @@ def get_city_budget_information(city, nights, budget):
         }
     
     number_of_nights = nights if nights else 1
-    if budget < number_of_nights * budget_information["low"]:
+    if budget < int(number_of_nights) * budget_information["low"]:
         return {
             "fulfillmentMessages": [
                 {
                     "text": {
                         "text": [
-                            "The budget range for a trip to " + city.capitalize() + " is between $" + str(number_of_nights * budget_information["low"]) + " and $" + str(number_of_nights * budget_information["high"]) + " for " + str(number_of_nights) + " nights.",
+                            "The budget range for a trip to " + city.capitalize() + " is between $" + str(int(number_of_nights) * budget_information["low"]) + " and $" + str(int(number_of_nights) * budget_information["high"]) + " for " + str(number_of_nights) + " nights.",
                             "It seems that your budget is too low for a trip to " + city.capitalize() + "."
                         ]
                     }
@@ -442,7 +442,7 @@ def get_city_budget_information(city, nights, budget):
         {
             "text": {
                 "text": [
-                    "The budget range for a trip to " + city.capitalize() + " is between $" + str(number_of_nights * budget_information["low"]) + " and $" + str(number_of_nights * budget_information["high"]) + " for " + str(number_of_nights) + " nights."
+                    "The budget range for a trip to " + city.capitalize() + " is between $" + str(int(number_of_nights) * budget_information["low"]) + " and $" + str(int(number_of_nights) * budget_information["high"]) + " for " + str(number_of_nights) + " nights."
                 ]
             }
         }
